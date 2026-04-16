@@ -139,6 +139,22 @@ function goFullscreen() {
 window.onload = () => {
   document.documentElement.requestFullscreen().catch(()=>{});
 };
+<script>
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+const duration = 8000; // 8 seconds
+
+function nextSlide() {
+  slides[index].classList.remove("active");
+  index = (index + 1) % slides.length;
+  slides[index].classList.add("active");
+}
+
+// Start slideshow AFTER page loads
+window.onload = function() {
+  setInterval(nextSlide, duration);
+};
 </script>
 
 </body>
