@@ -125,14 +125,98 @@ window.addEventListener("load", function () {
   }
 
   animateProgress();
-  setInterval(nextSlide, duration);
+  setInterval(nextSlide, duration);<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Library Slideshow</title>
 
-});
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: black;
+  }
+
+  .slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+  }
+
+  .slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .active {
+    opacity: 1;
+  }
+</style>
+</head>
+
+<body>
+
+<div id="slideshow"></div>
+
+<script>
+// 🔗 PASTE YOUR SHAREPOINT TEXT FILE LINK HERE
+const slidesFile = "PASTE_YOUR_SHAREPOINT_LINK_HERE";
+
+async function loadSlides() {
+  try {
+    const response = await fetch(slidesFile);
+    const text = await response.text();
+
+    const links = text.split("\n").filter(link => link.trim() !== "");
+
+    const container = document.getElementById("slideshow");
+
+    links.forEach((src, i) => {
+      const div = document.createElement("div");
+      div.className = "slide";
+      if (i === 0) div.classList.add("active");
+
+      const img = document.createElement("img");
+      img.src = formatSharePointLink(src.trim());
+
+      div.appendChild(img);
+      container.appendChild(div);
+    });
+
+    startSlideshow();
+
+  } catch (error) {
+    console.error("Error loading slides:", error);
+  }
+}
+
+// 🔧 Fix SharePoint links so images display properly
+function formatSharePointLink(url) {
+  return url
+    .replace(":u:/r/", "/")
+    .replace("?e=", "")
+    .split("?")[0];
+}
+
+function startSlideshow() {
+  let slides = document.querySelectorAll(".slide");
+  let index = 0;
+  const duration = 8000;
+
+  setInterval(() => {
+    slides[index].classList.remove("active");
+    index = (index + 1) % slides.length;
+    slides[index].classList.add("active");
+  }, duration);
+}
+
+loadSlides();
 </script>
 
 </body>
 </html>
-
-.active {
-  opacity: 1;
-}
