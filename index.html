@@ -141,18 +141,3 @@ function goFullscreen() {
 
 </body>
 </html>
-
-  function nextSlide() {
-    slides[index].classList.remove("active");
-    index = (index + 1) % slides.length;
-    slides[index].classList.add("active");
-
-    updateDots();
-    animateProgress();
-  }
-
-  animateProgress();
-  setInterval(nextSlide, duration);
-
-});
-</script>
